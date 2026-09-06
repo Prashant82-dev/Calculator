@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcura</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="nebula">
+
+    <div class="bg-orbs" aria-hidden="true">
+        <span class="orb orb-1"></span>
+        <span class="orb orb-2"></span>
+        <span class="orb orb-3"></span>
+    </div>
+
+    <div class="app">
+
+        <header class="topbar">
+            <div class="tabs" role="tablist" aria-label="Mode">
+                <button class="tab active" data-tab="calc" role="tab" aria-selected="true">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 2h14a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v4h14V4H5zm0 6v2h4v-2H5zm6 0v2h4v-2h-4zm6 0v2h2v-2h-2zM5 14v2h4v-2H5zm6 0v2h4v-2h-4zm6 0v2h2v-2h-2zM5 18v2h4v-2H5zm6 0v2h4v-2h-4z"/></svg>
+                    Calc
+                </button>
+                <button class="tab" data-tab="graph" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M3 3h2v18H3V3zm2 16h16v2H5v-2zm2.5-3.5 3-4 3 2.5 4.5-7 1.5 1L15 16l-3-2.5-2.8 3.7-1.7-1.7z"/></svg>
+                    Graph
+                </button>
+                <button class="tab" data-tab="convert" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M7 7h11l-3-3 1.4-1.4L21.8 8 16.4 13.4 15 12l3-3H7V7zm10 10H6l3 3-1.4 1.4L2.2 16 7.6 10.6 9 12l-3 3h11v2z"/></svg>
+                    Convert
+                </button>
+                <button class="tab" data-tab="prog" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6zm5.2 0L19.2 12l-4.6-4.6L16 6l6 6-6 6z"/></svg>
+                    Prog
+                </button>
+            </div>
+
+            <div class="top-actions">
+                <button class="icon-btn" id="historyToggle" aria-label="Show history" title="History">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M13 3a9 9 0 1 0 8.94 10h-2.02A7 7 0 1 1 13 5v4l5-4-5-4v3z"/></svg>
+                </button>
+                <div class="theme-picker" id="themePicker" title="Theme">
+                    <button class="swatch" data-theme="nebula" aria-label="Nebula theme"></button>
+                    <button class="swatch" data-theme="forest" aria-label="Forest theme"></button>
+                    <button class="swatch" data-theme="blush" aria-label="Blush theme"></button>
+                    <button class="swatch" data-theme="mono" aria-label="Mono theme"></button>
+                </div>
+            </div>
+        </header>
+
+        <main class="stage">
+
+            <!-- ===================== CALCULATOR PANEL ===================== -->
+            <section class="panel active-panel" id="panel-calc">
+                <div class="calculator" id="calculator">
+
+                    <div class="mode-switch" role="tablist" aria-label="Calculator mode">
+                        <button class="mode-btn active" id="basicModeBtn" role="tab" aria-selected="true">Basic</button>
+                        <button class="mode-btn" id="sciModeBtn" role="tab" aria-selected="false">Scientific</button>
+                    </div>
+
+                    <div class="display">
+                        <div class="expression" id="expression">&nbsp;</div>
+                        <div class="display-row">
+                            <input type="text" id="inputBox" placeholder="0" readonly aria-label="Result">
+                            <button class="copy-btn" id="copyBtn" aria-label="Copy result" title="Copy result">
+                                <svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+                            </button>
+                        </div>
+                        <div class="error-msg" id="errorMsg"></div>
+                    </div>
+
+                    <div class="memory-row">
+                        <button class="mem-btn" data-mem="MC">MC</button>
+                        <button class="mem-btn" data-mem="MR">MR</button>
+                        <button class="mem-btn" data-mem="M+">M+</button>
+                        <button class="mem-btn" data-mem="M-">M-</button>
+                        <span class="mem-indicator" id="memIndicator"></span>
+                    </div>
+
+                    <div class="sci-row" id="sciRow">
+                        <button data-val="sin(">sin</button>
+                        <button data-val="cos(">cos</button>
+                        <button data-val="tan(">tan</button>
+                        <button data-val="sqrt(">&radic;</button>
+                        <button data-val="log(">log</button>
+                        <button data-val="ln(">ln</button>
+                        <button data-val="^">x<sup>y</sup></button>
+                        <button data-val="(">(</button>
+                        <button data-val=")">)</button>
+                        <button data-val="pi">&pi;</button>
+                        <button data-val="e">e</button>
+                        <button data-val="!">n!</button>
+                    </div>
+
+                    <div class="btn-grid">
+                        <div class="row">
+                            <button class="operator" data-action="clear">AC</button>
+                            <button class="operator" data-action="del">DEL</button>
+                            <button class="operator" data-val="%">%</button>
+                            <button class="operator" data-val="/">&divide;</button>
+                        </div>
+                        <div class="row">
+                            <button data-val="7">7</button>
+                            <button data-val="8">8</button>
+                            <button data-val="9">9</button>
+                            <button class="operator" data-val="*">&times;</button>
+                        </div>
+                        <div class="row">
+                            <button data-val="4">4</button>
+                            <button data-val="5">5</button>
+                            <button data-val="6">6</button>
+                            <button class="operator" data-val="-">&minus;</button>
+                        </div>
+                        <div class="row">
+                            <button data-val="1">1</button>
+                            <button data-val="2">2</button>
+                            <button data-val="3">3</button>
+                            <button class="operator" data-val="+">+</button>
+                        </div>
+                        <div class="row">
+                            <button data-val="00">00</button>
+                            <button data-val="0">0</button>
+                            <button data-val=".">.</button>
+                            <button class="equalBtn" data-action="equals">=</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== GRAPH PANEL ===================== -->
+            <section class="panel" id="panel-graph">
+                <div class="glass-card graph-card">
+                    <label class="field-label" for="graphFn">y =</label>
+                    <input type="text" id="graphFn" class="fn-input" value="sin(x)*x" placeholder="e.g. sin(x)*x, x^2-3">
+                    <canvas id="graphCanvas" width="620" height="360" aria-label="Function graph"></canvas>
+                    <div class="graph-controls">
+                        <button id="zoomOut" class="pill-btn">&minus; Zoom</button>
+                        <span class="range-label" id="rangeLabel">x: -10 to 10</span>
+                        <button id="zoomIn" class="pill-btn">+ Zoom</button>
+                    </div>
+                    <div class="error-msg" id="graphError"></div>
+                </div>
+            </section>
+
+            <!-- ===================== CONVERTER PANEL ===================== -->
+            <section class="panel" id="panel-convert">
+                <div class="glass-card convert-card">
+                    <div class="convert-category">
+                        <label for="convCategory" class="field-label">Category</label>
+                        <select id="convCategory">
+                            <option value="length">Length</option>
+                            <option value="weight">Weight / Mass</option>
+                            <option value="temperature">Temperature</option>
+                            <option value="area">Area</option>
+                            <option value="speed">Speed</option>
+                            <option value="data">Data storage</option>
+                        </select>
+                    </div>
+
+                    <div class="convert-row">
+                        <div class="convert-col">
+                            <input type="text" id="convFromValue" class="fn-input" value="1" inputmode="decimal">
+                            <select id="convFromUnit"></select>
+                        </div>
+
+                        <button id="convSwap" class="icon-btn swap-btn" title="Swap units" aria-label="Swap units">
+                            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M7 7h11l-3-3 1.4-1.4L21.8 8 16.4 13.4 15 12l3-3H7V7zm10 10H6l3 3-1.4 1.4L2.2 16 7.6 10.6 9 12l-3 3h11v2z"/></svg>
+                        </button>
+
+                        <div class="convert-col">
+                            <input type="text" id="convToValue" class="fn-input" readonly>
+                            <select id="convToUnit"></select>
+                        </div>
+                    </div>
+                    <div class="error-msg" id="convError"></div>
+                </div>
+            </section>
+
+            <!-- ===================== PROGRAMMER PANEL ===================== -->
+            <section class="panel" id="panel-prog">
+                <div class="glass-card prog-card">
+                    <div class="prog-entry">
+                        <label class="field-label" for="progInput">Enter value</label>
+                        <div class="prog-entry-row">
+                            <input type="text" id="progInput" class="fn-input mono" value="42">
+                            <select id="progBase">
+                                <option value="10">Decimal</option>
+                                <option value="2">Binary</option>
+                                <option value="8">Octal</option>
+                                <option value="16">Hex</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="prog-readouts" id="progReadouts">
+                        <div class="readout"><span>DEC</span><strong id="outDec">0</strong></div>
+                        <div class="readout"><span>BIN</span><strong id="outBin">0</strong></div>
+                        <div class="readout"><span>OCT</span><strong id="outOct">0</strong></div>
+                        <div class="readout"><span>HEX</span><strong id="outHex">0</strong></div>
+                    </div>
+                    <div class="error-msg" id="progError"></div>
+
+                    <div class="prog-bitwise">
+                        <div class="field-label">Bitwise</div>
+                        <div class="bitwise-row">
+                            <input type="text" id="bitA" class="fn-input mono" placeholder="A" value="12">
+                            <select id="bitOp">
+                                <option value="AND">AND</option>
+                                <option value="OR">OR</option>
+                                <option value="XOR">XOR</option>
+                                <option value="NOT">NOT (A only)</option>
+                                <option value="<<">&lt;&lt; shift</option>
+                                <option value=">>">&gt;&gt; shift</option>
+                            </select>
+                            <input type="text" id="bitB" class="fn-input mono" placeholder="B" value="10">
+                        </div>
+                        <div class="bitwise-result" id="bitResult">= 0</div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <aside class="history-panel" id="historyPanel" aria-label="Calculation history">
+            <div class="history-header">
+                <h2>History</h2>
+                <button id="clearHistory">Clear</button>
+            </div>
+            <ul id="historyList"><li class="empty">No calculations yet</li></ul>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
